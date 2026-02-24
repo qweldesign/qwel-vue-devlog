@@ -1,18 +1,24 @@
 <script lang="ts" setup>
+import { ref } from 'vue'
 import { sections, socials } from '../types/navigation'
+import { useScrollToAnchor } from '../composables/useScrollToAnchor'
 import XIcon from '../assets/icons/icon-x.svg'
 import FacebookIcon from '../assets/icons/icon-facebook.svg'
 import InstagramIcon from '../assets/icons/icon-instagram.svg'
+
+const headerRef = ref<HTMLElement | null>(null)
 
 const componentsMap = {
   x: XIcon,
   facebook: FacebookIcon,
   instagram: InstagramIcon
 }
+
+useScrollToAnchor(headerRef)
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" ref="headerRef">
     <div class="header__inner">
       <nav class="nav">
         <h1 class="sitebrand">
