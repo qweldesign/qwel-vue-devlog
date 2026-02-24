@@ -1,6 +1,6 @@
 // useScrollToAnchor.ts
 
-import { type Ref, onMounted, onUnmounted } from "vue"
+import { type Ref, onMounted, onUnmounted } from 'vue'
 
 interface Options {
   cssVar?: string
@@ -58,4 +58,6 @@ export function useScrollToAnchor(headerRef: Ref<HTMLElement | null> , options: 
   onUnmounted(() => {
     window.removeEventListener('resize', onResize)
   })
+
+  return { updateOffset }
 }

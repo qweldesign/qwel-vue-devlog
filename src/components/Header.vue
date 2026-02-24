@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { sections, socials } from '../types/navigation'
-import { useScrollToAnchor } from '../composables/useScrollToAnchor'
+import { useActiveHeader } from '../composables/useActiveHeader'
 import XIcon from '../assets/icons/icon-x.svg'
 import FacebookIcon from '../assets/icons/icon-facebook.svg'
 import InstagramIcon from '../assets/icons/icon-instagram.svg'
 
+const sentinelRef = ref<HTMLDivElement | null>(null)
 const headerRef = ref<HTMLElement | null>(null)
+const isActiveRef = ref(false)
 
 const componentsMap = {
   x: XIcon,
@@ -14,11 +16,12 @@ const componentsMap = {
   instagram: InstagramIcon
 }
 
-useScrollToAnchor(headerRef)
+const { updateOffset } = useActiveHeader(sentinelRef, headerRef, isActiveRef)
 </script>
 
 <template>
-  <header class="header" ref="headerRef">
+  <div ref="sentinelRef"></div>
+  <header class="header" :class="{ 'is-active': isActiveRef }" ref="headerRef" @transitionend="updateOffset">
     <div class="header__inner">
       <nav class="nav">
         <h1 class="sitebrand">
