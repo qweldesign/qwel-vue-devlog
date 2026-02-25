@@ -1,23 +1,33 @@
 // useScrollToAnchor.ts
 
-import { type Ref, onMounted, onUnmounted } from 'vue'
+import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onUnmounted } from 'vue'
 
-interface Options {
+export type ScrollToAnchorContextType = {
+  headerRef: Ref<HTMLElement | null>
+  updateOffset: () => void
+}
+
+interface Props {
   cssVar?: string
   offset?: number
 }
 
-export function useScrollToAnchor(headerRef: Ref<HTMLElement | null> , options: Options = {}) {
+const scrollToAnchorKey: InjectionKey<ScrollToAnchorContextType> = Symbol('ScrollToAnchorContext')
+
+export function provideScrollToAnchor(props: Props = {}) {
+  // Provide
+  const headerRef = ref<HTMLElement | null>(null)
+
   // オプション
-  const cssVar = options.cssVar ?? '--scroll-offset'
-  const fallbackOffset = options.offset ?? 0
+  const cssVar = props.cssVar ?? '--scroll-offset'
+  const fallbackOffset = props.offset ?? 0
 
   // resize throttle
   let resizeTicking = false
 
   // header高さを取得
   const getHeaderOffset = () => {
-    return headerRef ? headerRef.value?.offsetHeight : fallbackOffset
+    return headerRef.value?.offsetHeight ?? fallbackOffset
   }
 
   // CSS変数にセット
@@ -59,5 +69,11 @@ export function useScrollToAnchor(headerRef: Ref<HTMLElement | null> , options: 
     window.removeEventListener('resize', onResize)
   })
 
-  return { updateOffset }
+  provide(scrollToAnchorKey, { headerRef, updateOffset })
+
+  return { headerRef, updateOffset }
+}
+
+export function useScrollToAnchor() {
+  return inject(scrollToAnchorKey)
 }

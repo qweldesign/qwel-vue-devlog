@@ -1,22 +1,25 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
 import { sections, socials } from '../types/navigation'
+import { useScrollToAnchor } from '../composables/useScrollToAnchor'
 import { useActiveHeader } from '../composables/useActiveHeader'
 import XIcon from '../assets/icons/icon-x.svg'
 import FacebookIcon from '../assets/icons/icon-facebook.svg'
 import InstagramIcon from '../assets/icons/icon-instagram.svg'
 
-const sentinelRef = ref<HTMLDivElement | null>(null)
-const headerRef = ref<HTMLElement | null>(null)
-const isActiveRef = ref(false)
+const activeHeader = useActiveHeader()
+const scrollToAnchor = activeHeader ? null : useScrollToAnchor()
+const sentinelRef = activeHeader?.sentinelRef
+const headerRef = activeHeader?.headerRef ?? scrollToAnchor?.headerRef
+const isActiveRef = activeHeader?.isActiveRef ?? true
+const updateOffset = activeHeader?.updateOffset
+
+defineExpose({ sentinelRef, headerRef })
 
 const componentsMap = {
   x: XIcon,
   facebook: FacebookIcon,
   instagram: InstagramIcon
 }
-
-const { updateOffset } = useActiveHeader(sentinelRef, headerRef, isActiveRef)
 </script>
 
 <template>

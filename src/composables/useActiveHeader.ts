@@ -1,16 +1,20 @@
 // useActiveHeader.ts
 
-import { type Ref, onMounted, onUnmounted } from 'vue'
-import { useScrollToAnchor } from './useScrollToAnchor'
+import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onUnmounted } from 'vue'
 
-interface Options {
-  cssVar?: string
-  offset?: number
+type ActiveHeaderContextType = {
+  sentinelRef: Ref<HTMLElement | null>
+  headerRef: Ref<HTMLElement | null>
+  isActiveRef: Ref<boolean>
+  updateOffset: () => void
 }
 
-export function useActiveHeader(sentinelRef: Ref<HTMLElement | null> , headerRef: Ref<HTMLElement | null> , isActiveRef: Ref<boolean>, options: Options = {}) {
-  // ScrollToAnchor
-  const { updateOffset } = useScrollToAnchor(headerRef, options)
+const activeHeaderKey: InjectionKey<ActiveHeaderContextType> = Symbol('ActiveHeaderContext')
+
+export function provideActiveHeader(headerRef: Ref<HTMLElement | null>, updateOffset: () => void) {
+  // Provide
+  const sentinelRef = ref<HTMLElement | null>(null)
+  const isActiveRef = ref<boolean>(true)
 
   let observer: IntersectionObserver | null = null
   
@@ -30,6 +34,10 @@ export function useActiveHeader(sentinelRef: Ref<HTMLElement | null> , headerRef
   onUnmounted(() => {
     observer?.disconnect()
   })
+  
+  provide(activeHeaderKey, { sentinelRef, headerRef, isActiveRef, updateOffset })
+}
 
-  return { updateOffset }
+export function useActiveHeader() {
+  return inject(activeHeaderKey)
 }
