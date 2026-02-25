@@ -2,6 +2,7 @@
 import { sections, socials } from '../types/navigation'
 import { useScrollToAnchor } from '../composables/useScrollToAnchor'
 import { useActiveHeader } from '../composables/useActiveHeader'
+import { useScrollSpy } from '../composables/useScrollSpy'
 import XIcon from '../assets/icons/icon-x.svg'
 import FacebookIcon from '../assets/icons/icon-facebook.svg'
 import InstagramIcon from '../assets/icons/icon-instagram.svg'
@@ -12,6 +13,8 @@ const sentinelRef = activeHeader?.sentinelRef
 const headerRef = activeHeader?.headerRef ?? scrollToAnchor?.headerRef
 const isActiveRef = activeHeader?.isActiveRef ?? true
 const updateOffset = activeHeader?.updateOffset
+const scrollSpy = useScrollSpy()
+const currentId = scrollSpy?.currentId
 
 defineExpose({ sentinelRef, headerRef })
 
@@ -31,7 +34,7 @@ const componentsMap = {
           <img src="/images/logo.svg" alt="QWEL in Action" />
         </h1>
         <ul class="primary-menu">
-          <li class="primary-menu__item" v-for="name in sections">
+          <li class="primary-menu__item" v-for="name in sections" :key="name" :class="{ 'is-current': currentId === name }">
             <a :href="`#${name}`">{{ name }}</a>
           </li>
         </ul>
