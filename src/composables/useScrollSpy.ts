@@ -1,6 +1,6 @@
 // useScrollSpy.ts
 
-import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onUnmounted } from 'vue'
+import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onBeforeUnmount } from 'vue'
 
 type ScrollSpyContextType = {
   registerSection: (el: HTMLElement) => void
@@ -48,7 +48,7 @@ export function provideScrollSpy(props: Props = {}) {
     })
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     observer?.disconnect()
   })
 

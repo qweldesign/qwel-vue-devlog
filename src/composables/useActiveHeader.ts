@@ -1,6 +1,6 @@
 // useActiveHeader.ts
 
-import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onUnmounted } from 'vue'
+import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onBeforeUnmount } from 'vue'
 
 type ActiveHeaderContextType = {
   sentinelRef: Ref<HTMLElement | null>
@@ -31,7 +31,7 @@ export function provideActiveHeader(headerRef: Ref<HTMLElement | null>, updateOf
     if (sentinelRef.value) observer.observe(sentinelRef.value);
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     observer?.disconnect()
   })
   

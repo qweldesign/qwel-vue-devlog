@@ -1,6 +1,6 @@
 // useScrollToAnchor.ts
 
-import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onUnmounted } from 'vue'
+import { type Ref, provide, inject, type InjectionKey, ref, onMounted, onBeforeUnmount } from 'vue'
 
 export type ScrollToAnchorContextType = {
   headerRef: Ref<HTMLElement | null>
@@ -65,7 +65,7 @@ export function provideScrollToAnchor(props: Props = {}) {
     window.addEventListener('resize', onResize, { passive: true })
   })
 
-  onUnmounted(() => {
+  onBeforeUnmount(() => {
     window.removeEventListener('resize', onResize)
   })
 
