@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { sections } from '../types/navigation'
-import Hero from './Hero.vue'
-import AppSection from './Section.vue'
+import Hero from '../projects/Hero.vue'
+import AppSection from '../projects/Section.vue'
 </script>
 
 <template>

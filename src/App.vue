@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import AppHeader from './components/Header.vue'
-import AppMain from './components/Main.vue'
-import AppFooter from './components/Footer.vue'
+import AppHeader from './layout/Header.vue'
+import AppMain from './layout/Main.vue'
+import AppFooter from './layout/Footer.vue'
 import { provideScrollToAnchor } from './composables/useScrollToAnchor'
 import { provideActiveHeader } from './composables/useActiveHeader'
 import { provideScrollSpy } from './composables/useScrollSpy'
