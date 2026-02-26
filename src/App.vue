@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppHeader from './layout/Header.vue'
 import AppMain from './layout/Main.vue'
+import BackToTop from './patterns/BackToTop.vue'
 import AppFooter from './layout/Footer.vue'
 import { provideScrollToAnchor } from './composables/useScrollToAnchor'
 import { provideActiveHeader } from './composables/useActiveHeader'
@@ -16,5 +17,6 @@ provideReadableOnScroll()
 <template>
   <AppHeader />
   <AppMain />
+  <BackToTop />
   <AppFooter />
 </template>
